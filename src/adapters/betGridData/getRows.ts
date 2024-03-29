@@ -54,8 +54,10 @@ const getTeamOddsBySiteId = ({ teamListings }: { teamListings: Listings }) => {
       listing.americanOdds ?? Number.NEGATIVE_INFINITY,
       bestLine
     );
+
     return {
       ...acc,
+      bestLine: bestLine.toString(),
       [listing.siteId]: listing.americanOdds?.toString() ?? "",
     };
   }, {} as Record<string, string>);

@@ -25,5 +25,16 @@ export const getColumns = ({
     renderCell,
   };
 
-  return [teamsColumn, ...getSitesColumns({ sites, renderCell })];
+  const bestLineColumn: GridColDef = {
+    field: "bestLine",
+    headerName: "BestLine",
+    width: 150,
+    renderCell,
+  };
+
+  return [
+    teamsColumn,
+    bestLineColumn,
+    ...getSitesColumns({ sites, renderCell }),
+  ];
 };

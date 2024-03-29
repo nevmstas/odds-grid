@@ -4,8 +4,9 @@ import {
   gql,
   useApolloClient,
   useLazyQuery,
+  useQuery,
 } from "@apollo/client";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export const GET_GAMES = gql`
   query GetGames($ids: [Guid]!, $league: LeagueEnum!) {
@@ -159,58 +160,65 @@ export const GET_GAMES = gql`
 
 export const useFetchGames = () => {
   const client = useApolloClient();
+  const [missingGamesLoading, setMissingGamesLoading] = useState(false);
 
-  const [fetch, _] = useLazyQuery<GetGamesQuery, GetGamesQueryVariables>(
-    GET_GAMES,
-    {
-      // Caching will be customized below
-      fetchPolicy: "no-cache",
-    }
-  );
+  const [fetchGames, { data }] = useLazyQuery<
+    GetGamesQuery,
+    GetGamesQueryVariables
+  >(GET_GAMES, {
+    // Caching will be customized below
+    fetchPolicy: "no-cache",
+  });
 
-  const getExistingIdsSet = () => {
-    const existingData = client.readQuery<GetGamesQuery>({
-      query: GET_GAMES,
-    });
-
-    const existingIds = existingData?.games
-      ? (existingData.games
+  const existingIdsSet = useMemo(() => {
+    const existingIds = data?.games
+      ? (data.games
           .map((game) => game?.id)
           .filter((gameId) => gameId !== "string") as string[])
       : [];
 
     return new Set(existingIds);
-  };
+  }, [data]);
 
-  const customFetch = async (
-    options: LazyQueryHookExecOptions<GetGamesQuery, GetGamesQueryVariables>
-  ) => {
-    const existingIdsSet = getExistingIdsSet();
-    const ids = options?.variables?.ids as string[];
-    const idsToFetch = ids.filter((id) => !existingIdsSet.has(id));
+  const fetchMissingGames = useCallback(
+    async (
+      options: LazyQueryHookExecOptions<GetGamesQuery, GetGamesQueryVariables>
+    ) => {
+      try {
+        setMissingGamesLoading(true);
 
-    if (!options?.variables?.league || idsToFetch.length === 0) {
-      return;
-    }
+        const ids = options?.variables?.ids as string[];
+        const idsToFetch = ids.filter((id) => !existingIdsSet.has(id));
 
-    const result = await fetch({
-      variables: {
-        league: options.variables.league,
-        ids: idsToFetch,
-      },
-    });
+        if (!options?.variables?.league || idsToFetch.length === 0) {
+          setMissingGamesLoading(false);
+          return;
+        }
 
-    if (result.data) {
-      client.writeQuery<GetGamesQuery>({
-        query: GET_GAMES,
-        data: result.data,
-      });
-    }
+        const result = await fetchGames({
+          variables: {
+            league: options.variables.league,
+            ids: idsToFetch,
+          },
+        });
 
-    return result;
-  };
+        if (result.data) {
+          client.writeQuery<GetGamesQuery>({
+            query: GET_GAMES,
+            data: result.data,
+          });
+        }
 
-  return customFetch;
+        return result;
+      } catch (e) {
+      } finally {
+        setMissingGamesLoading(false);
+      }
+    },
+    [existingIdsSet]
+  );
+
+  return { fetchGames: fetchMissingGames, loading: missingGamesLoading };
 };
 
 export const useGames = () => {

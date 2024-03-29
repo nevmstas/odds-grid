@@ -17,6 +17,7 @@ interface IBetDataGrid {
   betData?: BetCacheSubscription;
   games?: GetGamesQuery | null;
   sites?: BetSitesQuery;
+  isLoading: boolean;
 }
 
 const renderCell = (
@@ -35,6 +36,7 @@ const BetDataGrid = ({
   betData = {},
   sites = {},
   games = {},
+  isLoading = false,
 }: IBetDataGrid) => {
   const { rows, columns } = useMemo(
     () =>
@@ -48,15 +50,16 @@ const BetDataGrid = ({
   );
 
   return (
-    <div style={{ height: 1000 }}>
+    <div style={{ height: 500 }}>
       <DataGrid
         columns={columns}
         rows={rows}
         rowHeight={70}
         scrollbarSize={10}
+        loading={isLoading}
         sx={{
           "* ::-webkit-scrollbar": {
-            "-webkit-appearance": "none",
+            WebkitAppearance: "none",
             width: "7px",
             height: "7px",
           },

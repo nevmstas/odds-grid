@@ -11,7 +11,7 @@ import {
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
-// import { persistCache } from "apollo3-cache-persist";
+import { persistCache, LocalStorageWrapper } from "apollo3-cache-persist";
 
 const wsLink = new GraphQLWsLink(
   createClient({
@@ -37,14 +37,16 @@ const splitLink = split(
 
 const cache = new NextSSRInMemoryCache();
 
-// const persist = async () => {
-//   await persistCache({
-//     cache,
-//     storage: window.localStorage,
-//   });
-// };
+const persist = async () => {
+  if (typeof window !== "undefined") {
+    persistCache({
+      cache,
+      storage: new LocalStorageWrapper(window.localStorage),
+    });
+  }
+};
 
-// persist();
+persist();
 
 const makeClient = () => {
   return new NextSSRApolloClient({

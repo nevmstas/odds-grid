@@ -19,10 +19,5 @@ const BET_SITES = gql`
 `;
 
 export const useBetSitesQuery = () => {
-  const { data, loading } = useQuery<BetSitesQuery>(BET_SITES);
-
-  return {
-    sites: data,
-    isLoading: loading,
-  };
+  return useQuery<BetSitesQuery>(BET_SITES);
 };
