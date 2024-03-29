@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bet odds
+
+App for monitoring betting markets in real-time with an odds screen
+
+## Technology Stack
+
+- Next.js v14
+- React
+- Typescript
+- MUI
+- GraphQL
+- Apollo + graphql-ws
+- Codegen
+
+## Work done ✅
+1. **Setted up latest version of Nextjs with appolo & graphql-ws, that allow us to use 2 approaches of rendering components with ssr & csr for future purposes
+2. **Prepared the data using custom adapter**
+3. **Managed appolo cahce in away that data is fetched is only is nessesary**
+4. **Displayed DataGrid using MUI and output monitor betting markets in real-time with an odds screen**
+5. **Calculated best lines column**
+6. **Built up virtualization, limit the amount of rendering**
+7. **Setted up graphql codegen typization**
+8. **Designed future layout (link below)**
 
 ## Getting Started
 
-First, run the development server:
+1. **Create `.env.local` file**
+  - In the root of the project, create a file named `.env.local`.
+  - Add the following variables, replacing `<host_pathname>` with the GraphQL URL
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_GRAPHQL_HOST_PATHNAME=<host_pathname>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**To start work project locally use this commands**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**To generate graphql types use this command**
 
-## Learn More
+```bash
+npm run codegen
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Current version of application**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<img width="1250" alt="image" src="https://github.com/nevmstas/odds-grid/assets/30295560/0c62f2e5-0d9e-4b62-9ad4-b3228ff1cf2b">
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Plans 💡
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Built layout using new design [figma link](https://www.figma.com/file/BmLf7zPtsxr8zBKiq4bWDe/NBA-ODDS?type=design&node-id=0%3A1&mode=design&t=4iY4rcwykpxVchyF-1)** 
+<img width="1176" alt="image" src="https://github.com/nevmstas/odds-grid/assets/30295560/90f3f152-5f22-40dd-b2da-27fb29cc968e">
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
