@@ -13,9 +13,9 @@ App for monitoring betting markets in real-time with an odds screen
 - Codegen
 
 ## Work done ✅
-1. **Setted up latest version of Nextjs with appolo & graphql-ws, that allow us to use 2 approaches of rendering components with ssr & csr for future purposes
+1. **Setted up latest version of Nextjs with Apollo & graphql-ws, that allow us to use 2 approaches of rendering components with ssr & csr for future purposes
 2. **Prepared the data using custom adapter**
-3. **Managed appolo cahce in away that data is fetched is only is nessesary**
+3. **Managed Apollo cache in away that data is fetched is only is nessesary**
 4. **Displayed DataGrid using MUI and output monitor betting markets in real-time with an odds screen**
 5. **Calculated best lines column**
 6. **Built up virtualization, limit the amount of rendering**
